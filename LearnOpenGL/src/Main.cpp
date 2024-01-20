@@ -48,16 +48,41 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 
+	//float vertices[] = {
+	//	// first triangle
+	//	 0.5f,  0.5f, 0.0f,  // top right
+	//	 0.5f, -0.5f, 0.0f,  // bottom right
+	//	-0.5f,  0.5f, 0.0f,  // top left 
+	//	// second triangle
+	//	 0.5f, -0.5f, 0.0f,  // bottom right
+	//	-0.5f, -0.5f, 0.0f,  // bottom left
+	//	-0.5f,  0.5f, 0.0f   // top left
+	//};
+
+
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		 0.5f,  0.5f, 0.0f,  // top right
+		 0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f   // top left 
 	};
+
+	unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 3,   // first triangle
+		1, 2, 3    // second triangle
+	};
+
 
 	// Create vertex array object
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
+
+	// Create EBO (elemental buffer)
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 
 	// Create a vertex buffer object
@@ -71,7 +96,7 @@ int main()
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
-	
+
 	{
 		int  success;
 		char infoLog[512];
@@ -149,10 +174,10 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-
 		glUseProgram(shaderProgram);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES,6, GL_UNSIGNED_INT, 0);
 
 		// check and call events and swap the buffers
 		glfwSwapBuffers(window);
