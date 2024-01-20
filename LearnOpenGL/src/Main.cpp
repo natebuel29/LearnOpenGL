@@ -57,15 +57,30 @@ int main()
 
 	float verticesTriangleOne[] = {
 		-1.0f, -0.5f, 0.0f,
-		 -0.5f, 0.5f, 0.0f,
-		 0.0f,  -0.5f, 0.0f,
+		-0.5f, 1.0f, 0.0f,
+		0.0f,  -0.5f, 0.0f,
+		0.0f,  -0.5f, 0.0f,
+		-0.5f, 1.0f, 0.0f,
+		0.5f, 1.0f, 0.0f,
+		1.0f, -0.5f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		-1.0f, -0.5f, 0.0f
+
 	};
 
 	float verticesTriangleTwo[] = {
 	 0.0f,-0.5f, 0.0f,
-	 0.5f, 0.5f, 0.0f,
-	 1.0f, -0.5f ,0.0f
-
+	 0.5f, 1.0f, 0.0f,
+	 1.0f, -0.5f ,0.0f,
+	 -1.0f,-0.5f, 0.0f,
+	 -1.0f, 1.0f, 0.0f,
+	 -0.5f, 1.0f, 0.0f,
+	 0.5f, 1.0f, 0.0f,
+	 1.0f, 1.0f, 0.0f,
+	 1.0f, -0.5f, 0.0f,
+	 -1.0f, -0.5f, 0.0f,
+	 -1.0f, -1.0f, 0.0f,
+	 1.0f, -1.0f, 0.0f,
 	};
 
 	// Create vertex array object
@@ -209,14 +224,13 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-
 		glUseProgram(shaderProgramOne);
 		glBindVertexArray(vaoOne);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 9);
 		glUseProgram(shaderProgramTwo);
 
 		glBindVertexArray(vaoTwo);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 12);
 
 
 		// check and call events and swap the buffers
