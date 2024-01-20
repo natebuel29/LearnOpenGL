@@ -49,9 +49,13 @@ int main()
 
 
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		-1.0f, -0.5f, 0.0f,
+		 -0.5f, 0.5f, 0.0f,
+		 0.0f,  -0.5f, 0.0f,
+		 0.0f,-0.5f, 0.0f,
+		 0.5f, 0.5f, 0.0f,
+		 1.0f, -0.5f ,0.0f
+
 	};
 
 	// Create vertex array object
@@ -71,7 +75,7 @@ int main()
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
-	
+
 	{
 		int  success;
 		char infoLog[512];
@@ -152,7 +156,7 @@ int main()
 
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		// check and call events and swap the buffers
 		glfwSwapBuffers(window);
