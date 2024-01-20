@@ -52,16 +52,24 @@ int main()
 		-1.0f, -0.5f, 0.0f,
 		 -0.5f, 0.5f, 0.0f,
 		 0.0f,  -0.5f, 0.0f,
-		 0.0f,-0.5f, 0.0f,
 		 0.5f, 0.5f, 0.0f,
 		 1.0f, -0.5f ,0.0f
+	};
 
+	unsigned int indicies[] = {
+		0, 1, 2,
+		2, 3, 4
 	};
 
 	// Create vertex array object
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
+
+	unsigned int EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
 
 
 	// Create a vertex buffer object
@@ -156,7 +164,8 @@ int main()
 
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 
 		// check and call events and swap the buffers
 		glfwSwapBuffers(window);
