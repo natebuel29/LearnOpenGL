@@ -9,8 +9,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+struct point
+{
+	float x;
+	float y;
+};
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void recursiveTransform(unsigned int transformLoc, glm::vec3 translate, glm::mat4 matrix, int depth);
 
 int main()
 {
@@ -43,15 +50,13 @@ int main()
 
 	float vertices[] = {
 		// positions          // colors           // texture coords
-		 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+		 0.0f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  0.5f, 1.0f,   // top right
 		 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
 		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
 
 	int indicies[] = {
 	0,1,2,
-	0,2,3,
 	};
 
 	Shader shader = Shader("shaders/shader.vs", "shaders/shader.fs");
@@ -156,9 +161,6 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glm::mat4 trans = glm::mat4(1.0f);
-		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 		shader.use();
 
@@ -167,17 +169,9 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		recursiveTransform(transformLoc, glm::vec3(0.0f, -0.5f, 0.0f), trans, 8);
 
-
-		glm::mat4 trans2 = glm::mat4(1.0f);
-		trans2 = glm::translate(trans2, glm::vec3(0.5f, 0.5f, 0.0f));
-		trans2 = glm::scale(trans2, glm::sin((float)glfwGetTime()) * glm::vec3(1.0f, 1.0f, 0.0f));
-
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans2));
-
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+		
 
 		// check and call events and swap the buffers
 		glfwSwapBuffers(window);
@@ -197,4 +191,21 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+}
+
+
+void recursiveTransform(unsigned int transformLoc, glm::vec3 translate, glm::mat4 matrix, int depth) {
+	if (depth < 0) return;
+
+	// center
+	matrix = glm::translate(matrix, translate); // move 
+	matrix = glm::scale(matrix, glm::vec3(0.5f));  // scale
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+
+	--depth;
+	recursiveTransform(transformLoc, glm::vec3(0.0f, 1.5f, 0.0f), matrix, depth);  // top 
+	recursiveTransform(transformLoc, glm::vec3(-1.0f, -0.5f, 0.0f), matrix, depth);  // left side
+	//matrix = glm::scale(matrix, glm::vec3(-1.0f, 1.0f, 1.0f));  // flip matrix on x to reverse our texture
+	recursiveTransform(transformLoc, glm::vec3(1.0f, -0.5f, 0.0f), matrix, depth); // right side (same translation vector is used since matrix was flipped)
 }
