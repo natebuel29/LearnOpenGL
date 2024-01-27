@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\light.fs" />
+    <None Include="shaders\light.vs" />
     <None Include="shaders\lighting.fs" />
     <None Include="shaders\lighting.vs" />
     <None Include="shaders\shader.fs" />
