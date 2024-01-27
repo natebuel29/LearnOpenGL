@@ -23,6 +23,7 @@ const unsigned int SCR_HEIGHT = 600;
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
@@ -193,10 +194,6 @@ int main()
 	glUniform1i(glGetUniformLocation(shader.ID, "texture1"), 0);
 	shader.setInt("texture2", 1);
 
-	int modelLoc = glGetUniformLocation(shader.ID, "model");
-	int viewLoc = glGetUniformLocation(shader.ID, "view");
-	int projectionLoc = glGetUniformLocation(shader.ID, "projection");
-
 	//these comments are for calculating the camera coordinates system
 	//glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 
@@ -207,9 +204,6 @@ int main()
 	//glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
 
 	//glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
-
-
-
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -240,19 +234,19 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader.use();
+	
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		shader.setMat4("projection", projection);
 
 		glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-
 		// camera/view transformation
 		glm::mat4 view = camera.GetViewMatrix();
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		shader.setMat4("view", view);
 
 		glBindVertexArray(VAO);
 		for (unsigned int i = 0; i < 10; i++)
@@ -261,12 +255,10 @@ int main()
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * i;
 			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+			shader.setMat4("model", model);
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-
-
 
 		// check and call events and swap the buffers
 		glfwSwapBuffers(window);
