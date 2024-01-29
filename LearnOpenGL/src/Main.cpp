@@ -171,7 +171,7 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		lightSourceShader.setMat4("view", view);
 
-		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+		glm::vec3 lightPos(2.0f*glm::sin(glfwGetTime()), 0.0f*glm::cos(glfwGetTime()), 2.0f * glm::cos(glfwGetTime()));
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, lightPos);
