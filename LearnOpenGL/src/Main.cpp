@@ -1,4 +1,8 @@
 #include <iostream>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Shader.h"
@@ -10,7 +14,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Camera.h"
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -145,9 +148,27 @@ int main()
 
 	glEnable(GL_DEPTH_TEST);
 
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplOpenGL3_Init();
+
 
 	while (!glfwWindowShouldClose(window))
 	{
+
+		{
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+			ImGui::ShowDemoWindow(); // Show demo window! :)
+		}
 		//TODO: NEED MORE COMMENTS DUMMY
 
 		float currentFrame = glfwGetTime();
@@ -189,6 +210,7 @@ int main()
 		lightingShader.setVec3("viewPos", camera.Position);
 
 		model = glm::mat4(1.0f);
+		model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 1.0f));
 
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
@@ -197,14 +219,18 @@ int main()
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		// check and call events and swap the buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
 	// optional: de-allocate all resources once they've outlived their purpose:
 // ------------------------------------------------------------------------
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	glDeleteVertexArrays(1, &lightSourceVAO);
 	glDeleteVertexArrays(1, &lightingVAO);
 	glDeleteBuffers(1, &VBO);
