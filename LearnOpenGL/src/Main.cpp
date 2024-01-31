@@ -56,7 +56,7 @@ int main()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
@@ -167,7 +167,23 @@ int main()
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
-			ImGui::ShowDemoWindow(); // Show demo window! :)
+			ImGui::ShowDemoWindow();
+		}			
+		
+		static float vec4f[4] = { 2.0f, 2.0f, 2.0f };
+		static float cubeRotation = 1.0f;
+
+		{
+			ImGui::Begin("Light Settings");
+
+			ImGui::SliderFloat3("Source Rotation", vec4f, 0.0f, 2.0f);
+			
+			ImGui::SliderFloat("Cube Rotation", &cubeRotation, 0.0f, 4.0f, "%.3f");
+
+			//ImGui::SameLine();
+
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			ImGui::End();
 		}
 		//TODO: NEED MORE COMMENTS DUMMY
 
@@ -192,7 +208,7 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		lightSourceShader.setMat4("view", view);
 
-		glm::vec3 lightPos(2.0f*glm::sin(glfwGetTime()), 0.0f*glm::cos(glfwGetTime()), 2.0f * glm::cos(glfwGetTime()));
+		glm::vec3 lightPos(vec4f[0] * glm::sin(glfwGetTime()), vec4f[1] * glm::cos(glfwGetTime()), vec4f[2] * glm::cos(glfwGetTime()));
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, lightPos);
@@ -210,7 +226,7 @@ int main()
 		lightingShader.setVec3("viewPos", camera.Position);
 
 		model = glm::mat4(1.0f);
-		model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, cubeRotation * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
@@ -225,6 +241,7 @@ int main()
 		// check and call events and swap the buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
 	}
 	// optional: de-allocate all resources once they've outlived their purpose:
 // ------------------------------------------------------------------------
@@ -261,8 +278,11 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
 	lastX = xpos;
 	lastY = ypos;
-
-	camera.ProcessMouseMovement(xoffset, yoffset);
+	//camera.ProcessMouseMovement(xoffset, yoffset);
+	// return to this in the future
+	if (ImGui::GetIO().WantCaptureMouse != true) {
+		camera.ProcessMouseMovement(xoffset, yoffset);
+	}
 }
 
 
@@ -270,7 +290,6 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(FORWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -279,6 +298,12 @@ void processInput(GLFWwindow* window)
 		camera.ProcessKeyboard(LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, deltaTime);
+	
+	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
