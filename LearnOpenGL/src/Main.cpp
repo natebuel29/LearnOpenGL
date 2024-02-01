@@ -173,6 +173,7 @@ int main()
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
+
 			ImGui::Begin("Light Settings");
 
 			ImGui::SliderFloat3("Source Rotation", sourceRotation, 0.0f, 4.0f);
@@ -193,7 +194,7 @@ int main()
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		
+
 		// input
 		processInput(window);
 
@@ -215,7 +216,7 @@ int main()
 		glm::vec3 lightPos(sourceRotation[0] * glm::sin(glfwGetTime()), sourceRotation[1] * glm::cos(glfwGetTime()), sourceRotation[2] * glm::cos(glfwGetTime()));
 
 		glm::mat4 model = glm::mat4(1.0f);
-		
+
 		// light source render commands
 		{
 			model = glm::translate(model, lightPos);
@@ -227,7 +228,7 @@ int main()
 			glBindVertexArray(lightSourceVAO);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-	
+
 		// cube render commands
 		{
 			lightingShader.use();
