@@ -44,9 +44,6 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
 	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
 	if (window == NULL)
 	{
@@ -56,7 +53,6 @@ int main()
 	}
 
 	glfwMakeContextCurrent(window);
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 
@@ -69,7 +65,6 @@ int main()
 	glViewport(0, 0, 800, 600);
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
 
 	float vertices[] = {
 		 -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -163,42 +158,49 @@ int main()
 	while (!glfwWindowShouldClose(window))
 	{
 
+
+		static float sourceRotation[3] = { 2.0f, 2.0f, 2.0f };
+		static float cubeRotation = 1.0f;
+
+		static float sourceColor[3] = { 255.0f, 255.0f, 255.0f };
+		static float cubeColor[3] = { 200.0f, 100.0f, 200.0f };
+
+		static float ambientStrength = 0.1f;
+		static int specularPower = 32;
+
+		// imgui
 		{
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
-			ImGui::ShowDemoWindow();
-		}			
-		
-		static float vec4f[4] = { 2.0f, 2.0f, 2.0f };
-		static float cubeRotation = 1.0f;
-
-		{
 			ImGui::Begin("Light Settings");
 
-			ImGui::SliderFloat3("Source Rotation", vec4f, 0.0f, 2.0f);
-			
+			ImGui::SliderFloat3("Source Rotation", sourceRotation, 0.0f, 4.0f);
 			ImGui::SliderFloat("Cube Rotation", &cubeRotation, 0.0f, 4.0f, "%.3f");
 
-			//ImGui::SameLine();
+
+			ImGui::SliderFloat3("Source Color", sourceColor, 0.0f, 255.0f);
+			ImGui::SliderFloat3("Cube Color", cubeColor, 0.0f, 255.0f);
+
+			ImGui::SliderFloat("Ambient Strength", &ambientStrength, 0.0f, 1.0f, "%.3f");
+			ImGui::SliderInt("Specular Power", &specularPower, 0, 256);
 
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 			ImGui::End();
 		}
-		//TODO: NEED MORE COMMENTS DUMMY
 
+		// calculate delta time
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+		
 		// input
 		processInput(window);
 
-		// rendering commands here
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		lightSourceShader.use();
-
 
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -208,32 +210,45 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		lightSourceShader.setMat4("view", view);
 
-		glm::vec3 lightPos(vec4f[0] * glm::sin(glfwGetTime()), vec4f[1] * glm::cos(glfwGetTime()), vec4f[2] * glm::cos(glfwGetTime()));
+		glm::vec3 lightColor(sourceColor[0] / 255, (float)sourceColor[1] / 255, (float)sourceColor[2] / 255);
+
+		glm::vec3 lightPos(sourceRotation[0] * glm::sin(glfwGetTime()), sourceRotation[1] * glm::cos(glfwGetTime()), sourceRotation[2] * glm::cos(glfwGetTime()));
 
 		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::translate(model, lightPos);
-		model = glm::scale(model, glm::vec3(0.2f));
-		lightSourceShader.setMat4("model", model);
+		
+		// light source render commands
+		{
+			model = glm::translate(model, lightPos);
+			model = glm::scale(model, glm::vec3(0.2f));
 
-		glBindVertexArray(lightSourceVAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+			lightSourceShader.setMat4("model", model);
+			lightSourceShader.setVec3("lightColor", lightColor);
 
-		lightingShader.use();
-		lightingShader.setVec3("lightPos", lightPos);
+			glBindVertexArray(lightSourceVAO);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+	
+		// cube render commands
+		{
+			lightingShader.use();
+			lightingShader.setVec3("lightPos", lightPos);
 
-		lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-		lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-		lightingShader.setVec3("viewPos", camera.Position);
+			lightingShader.setVec3("objectColor", cubeColor[0] / 255, cubeColor[1] / 255, cubeColor[2] / 255);
+			lightingShader.setVec3("lightColor", lightColor);
+			lightingShader.setVec3("viewPos", camera.Position);
 
-		model = glm::mat4(1.0f);
-		model = glm::rotate(model, cubeRotation * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
+			model = glm::mat4(1.0f);
+			model = glm::rotate(model, cubeRotation * (float)glfwGetTime(), glm::vec3(1.0f, 1.0f, 1.0f));
 
-		lightingShader.setMat4("projection", projection);
-		lightingShader.setMat4("view", view);
-		lightingShader.setMat4("model", model);
-		glBindVertexArray(lightingVAO);
+			lightingShader.setMat4("projection", projection);
+			lightingShader.setMat4("view", view);
+			lightingShader.setMat4("model", model);
+			lightingShader.setInt("specularPower", specularPower);
+			lightingShader.setFloat("ambientStrength", ambientStrength);
+			glBindVertexArray(lightingVAO);
 
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -298,7 +313,7 @@ void processInput(GLFWwindow* window)
 		camera.ProcessKeyboard(LEFT, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, deltaTime);
-	
+
 	if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS)
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS)
