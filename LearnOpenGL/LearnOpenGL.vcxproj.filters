@@ -22,4 +22,23 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader.vs" />
+    <None Include="shaders\shader.fs" />
+    <None Include="shaders\lighting.vs" />
+    <None Include="shaders\lighting.fs" />
+    <None Include="shaders\light.fs" />
+    <None Include="shaders\light.vs" />
+  </ItemGroup>
 </Project>
