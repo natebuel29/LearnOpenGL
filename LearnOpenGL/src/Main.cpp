@@ -171,7 +171,9 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		lightSourceShader.setMat4("view", view);
 
-		glm::vec3 lightPos(2.0f*glm::sin(glfwGetTime()), 0.0f*glm::cos(glfwGetTime()), 2.0f * glm::cos(glfwGetTime()));
+		//glm::vec3 lightPos(2.0f*glm::sin(glfwGetTime()), 0.0f*glm::cos(glfwGetTime()), 2.0f * glm::cos(glfwGetTime()));
+		glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, lightPos);
@@ -182,11 +184,26 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		lightingShader.use();
-		lightingShader.setVec3("lightPos", lightPos);
-
-		lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 		lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 		lightingShader.setVec3("viewPos", camera.Position);
+
+		lightingShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+		lightingShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+		lightingShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+		lightingShader.setFloat("material.shininess", 32.0f);
+		lightingShader.setVec3("light.position", lightPos);
+
+		glm::vec3 lightColor;
+		lightColor.x = (float)sin(glfwGetTime() * 2.0f);
+		lightColor.y = (float)sin(glfwGetTime() * 0.7f);
+		lightColor.z = (float)sin(glfwGetTime() * 1.3f);
+
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+		lightingShader.setVec3("light.ambient", ambientColor);
+		lightingShader.setVec3("light.diffuse", diffuseColor);
+		lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
 		model = glm::mat4(1.0f);
 
