@@ -69,47 +69,48 @@ int main()
 
 
 	float vertices[] = {
-		 -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		  0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		  0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		  0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		// positions          // normals           // texture coords
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
-		 -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		  0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		  0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		  0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
 
-		 -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		 -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		 -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		 -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		 -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		 -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-		  0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		  0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		  0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		  0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		  0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		  0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-		 -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		  0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		  0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		  0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		 -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		 -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 
-		 -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		  0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		  0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		  0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		 -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		 -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 	};
 
 	Shader lightingShader = Shader("shaders/lighting.vs", "shaders/lighting.fs");
@@ -129,7 +130,7 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	unsigned int lightingVAO;
@@ -138,13 +139,43 @@ int main()
 	// we only need to bind to the VBO, the container's VBO's data already contains the data.
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	// set the vertex attribute 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 
 	glEnable(GL_DEPTH_TEST);
 
+	int width, height, nrChannels;
+	unsigned char* data = stbi_load("textures/container2.png", &width, &height, &nrChannels, 0);
+
+	unsigned int diffuseMap;
+	glGenTextures(1, &diffuseMap);
+
+	glBindTexture(GL_TEXTURE_2D, diffuseMap);
+
+	// set the texture wrapping/filtering options (on the currently bound texture object)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	lightingShader.use();
+	lightingShader.setInt("material.diffuse", 0);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -193,13 +224,10 @@ int main()
 		lightingShader.setFloat("material.shininess", 32.0f);
 		lightingShader.setVec3("light.position", lightPos);
 
-		glm::vec3 lightColor;
-		lightColor.x = (float)sin(glfwGetTime() * 2.0f);
-		lightColor.y = (float)sin(glfwGetTime() * 0.7f);
-		lightColor.z = (float)sin(glfwGetTime() * 1.3f);
+		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
-		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+		glm::vec3 diffuseColor = lightColor;
+		glm::vec3 ambientColor = diffuseColor;
 
 		lightingShader.setVec3("light.ambient", ambientColor);
 		lightingShader.setVec3("light.diffuse", diffuseColor);
@@ -210,6 +238,9 @@ int main()
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
 		lightingShader.setMat4("model", model);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, diffuseMap);
+
 		glBindVertexArray(lightingVAO);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
