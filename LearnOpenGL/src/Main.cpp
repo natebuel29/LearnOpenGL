@@ -8,7 +8,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <filesystem>
 #include "Camera.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -152,13 +151,17 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
-	unsigned int diffuseMap= loadTexture("textures/container2.png");
+	unsigned int diffuseMap = loadTexture("textures/container2.png");
 	unsigned int specularMap = loadTexture("textures/container2_specular.png");
+	unsigned int emissionMap = loadTexture("textures/matrix.jpg");
+
 
 
 	lightingShader.use();
 	lightingShader.setInt("material.diffuse", 0);
 	lightingShader.setInt("material.specular", 1);
+	lightingShader.setInt("material.emission", 2);
+
 
 
 	while (!glfwWindowShouldClose(window))
@@ -208,6 +211,10 @@ int main()
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specularMap);
+
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, emissionMap);
+
 
 		// render the cube
 		glBindVertexArray(lightingVAO);
