@@ -200,6 +200,7 @@ int main()
 		glm::mat4 view = camera.GetViewMatrix();
 		lightingShader.setMat4("projection", projection);
 		lightingShader.setMat4("view", view);
+		lightingShader.setFloat("time", glfwGetTime());
 
 		// world transformation
 		glm::mat4 model = glm::mat4(1.0f);

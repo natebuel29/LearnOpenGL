@@ -30,6 +30,8 @@ uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
 uniform vec3 viewPos;
+uniform float time;
+
 
 
 void main()
@@ -49,11 +51,14 @@ void main()
     vec3 reflectDir = reflect(-lightDir, norm);  
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
-    
+
+
+
     vec3 emission = vec3(0.0);
     if (texture(material.specular, TexCoords).g == 0.0)   /*rough check for blackbox inside spec texture */
     {
-        emission = texture(material.emission, TexCoords).rgb;
+        vec3 emissionMap = vec3(texture(material.emission, TexCoords + vec2(0.0,time*0.75)));
+        emission = emissionMap * (sin(time)*0.5+0.5)*2.0;
     }
 
         
