@@ -32,6 +32,12 @@
     <ClInclude Include="src\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.vs" />
@@ -40,5 +46,7 @@
     <None Include="shaders\lighting.fs" />
     <None Include="shaders\light.fs" />
     <None Include="shaders\light.vs" />
+    <None Include="shaders\model_loading.vs" />
+    <None Include="shaders\model_loading.fs" />
   </ItemGroup>
 </Project>
