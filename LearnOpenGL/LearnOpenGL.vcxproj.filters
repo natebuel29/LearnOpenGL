@@ -48,5 +48,7 @@
     <None Include="shaders\light.vs" />
     <None Include="shaders\model_loading.vs" />
     <None Include="shaders\model_loading.fs" />
+    <None Include="shaders\depth_testing.fs" />
+    <None Include="shaders\depth_testing.vs" />
   </ItemGroup>
 </Project>
