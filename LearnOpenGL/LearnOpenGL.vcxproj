@@ -157,6 +157,7 @@
     <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\blending.fs" />
     <None Include="shaders\blending_discard.fs" />
     <None Include="shaders\blending_discard.vs" />
     <None Include="shaders\depth_testing.fs" />
